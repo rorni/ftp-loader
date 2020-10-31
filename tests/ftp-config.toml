@@ -1,0 +1,23 @@
+# Server's URL
+url = "server.ftp.ru"
+# Path to project's folder at FTP
+path = "projects/test-data"
+
+# List of files to be transfered
+[[files]]
+dst = "work"
+src = "storage"
+arch = "bz2"
+names = [
+    "data1.txt",
+    "data2.txt"
+]
+
+[[files]]
+dst = "experiment"
+src = "experiment"
+arch = "gz"
+names = [
+    "data1.csv",
+    "data2.csv"
+]
