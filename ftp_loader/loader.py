@@ -4,7 +4,6 @@ from pathlib import Path, PosixPath
 from urllib import request
 from pysftp import Connection
 import bz2, gzip
-import getpass
 
 from tomlkit import parse
 
