@@ -6,7 +6,7 @@ from ftp_loader import loader
 
 @pytest.mark.parametrize("filename, ans_url, ans_files", [
     (
-        'ftp-config.toml', 'server.ftp.ru/projects/test-data',
+        'tests/ftp-config.toml', 'server.ftp.ru/projects/test-data/',
         [
             {
                 'dst': 'work', 'src': 'storage', 'arch': 'bz2',

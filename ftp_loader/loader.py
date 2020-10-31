@@ -18,5 +18,12 @@ def load_config(filename="ftp-config.toml"):
     transfer_cases : list
         List of files to be transfered.
     """
-    pass
+    with open(filename) as f:
+        text = f.read()
+    result = parse(text)
+    path = result['path']
+    if len(path) > 0 and not path.endswith('/'):
+        path += '/'
+    server_url = result['url'] + '/' + path
+    return server_url, result['files']
 
