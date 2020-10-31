@@ -4,9 +4,9 @@ import pytest
 from ftp_loader import loader
 
 
-@pytest.mark.parametrize("filename, ans_url, ans_files", [
+@pytest.mark.parametrize("filename, ans_url, ans_path, ans_files", [
     (
-        'tests/ftp-config.toml', 'server.ftp.ru/projects/test-data/',
+        'tests/ftp-config.toml', 'server.ftp.ru', '/projects/test-data', 
         [
             {
                 'dst': 'work', 'src': 'storage', 'arch': 'bz2',
@@ -20,9 +20,10 @@ from ftp_loader import loader
         ]
     )
 ])
-def test_config_loader(filename, ans_url, ans_files):
-    url, files = loader.load_config(filename)
+def test_config_loader(filename, ans_url, ans_path, ans_files):
+    url, path, files = loader.load_config(filename)
     assert url == ans_url
+    assert path == ans_path
     assert len(files) == len(ans_files)
     for case, ans in zip(files, ans_files):
         assert case['dst'] == ans['dst']
