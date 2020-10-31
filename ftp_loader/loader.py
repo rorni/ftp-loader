@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from pathlib import Path, PosixPath
-from urllib import request
+from pathlib import Path
 from pysftp import Connection
 import bz2, gzip
 
@@ -50,11 +49,10 @@ def select_paths_for_download(path, files, **kwargs):
     file_pairs : list
         A list of tuples - (dst_file, src_file).
     """
-    path = PosixPath(path)
     file_pairs = []
     for case in files:
         dst_path = Path(case['dst'])
-        src_path = path / case['src']
+        src_path = Path(path, case['src'])
         arch = case.get('arch', None)
         if arch:
             ext = '.' + arch
@@ -65,7 +63,7 @@ def select_paths_for_download(path, files, **kwargs):
             dst_file = dst_path / filename
             src_file = src_path / filename
             if check_to_download(dst_file, **kwargs):
-                file_pairs.append(str(src_file), str(dst_file))
+                file_pairs.append((src_file.as_posix(), str(dst_file)))
     return file_pairs
 
 

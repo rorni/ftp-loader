@@ -30,3 +30,30 @@ def test_config_loader(filename, ans_url, ans_path, ans_files):
         assert case['src'] == ans['src']
         assert case['arch'] == ans['arch']
         assert case['names'] == ans['names']
+
+
+@pytest.mark.parametrize("path, options, files, answer", [
+    (
+        '/projects/test-data', {},
+        [
+            {
+                'dst': 'work', 'src': 'storage', 'arch': 'bz2',
+                'names': ['data1.txt', 'data2.txt']
+            },
+            {
+                'dst': 'experiment', 'src': 'experiment', 'arch': 'gz',
+                'names': ['data1.csv', 'data2.csv']
+            }
+
+        ], 
+        [
+            ('/projects/test-data/storage/data1.txt.bz2', r'work\data1.txt.bz2'),
+            ('/projects/test-data/storage/data2.txt.bz2', r'work\data2.txt.bz2'),
+            ('/projects/test-data/experiment/data1.csv.gz', r'experiment\data1.csv.gz'),
+            ('/projects/test-data/experiment/data2.csv.gz', r'experiment\data2.csv.gz')
+        ]
+    )
+])
+def test_select_paths(path, options, files, answer):
+    path_pairs = loader.select_paths_for_download(path, files, **options)
+    assert path_pairs == answer
