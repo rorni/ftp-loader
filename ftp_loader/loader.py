@@ -28,8 +28,6 @@ def load_config(filename="ftp-config.toml"):
         text = f.read()
     result = parse(text)
     path = result['path']
-    if not path.startswith('/'):
-        path = '/' + path
     server_url = result['url']
     return server_url, path, result['files']
 
@@ -90,6 +88,7 @@ def load_data(user, passwd, url, files):
     """
     downloaded = []
     with Connection(url, user, password=passwd) as conn:
+        print(conn.pwd)
         for remote_path, local_path in files:
             Path(local_path).parent.mkdir(exist_ok=True, parents=True)
             print('   * Downloading: {0} ...'.format(remote_path))
@@ -111,6 +110,7 @@ def decompress(files):
             continue
         with open(path.stem, 'wb') as fdst:
             with base.open(path, 'rb') as fsrc:
+                print('   * Extracting: {0} ...'.format(path))
                 fdst.write(fsrc.read())
 
 

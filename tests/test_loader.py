@@ -6,7 +6,7 @@ from ftp_loader import loader
 
 @pytest.mark.parametrize("filename, ans_url, ans_path, ans_files", [
     (
-        'tests/ftp-config.toml', 'server.ftp.ru', '/projects/test-data', 
+        'tests/ftp-config.toml', 'server.ftp.ru', 'projects/test-data', 
         [
             {
                 'dst': 'work', 'src': 'storage', 'arch': 'bz2',
@@ -34,7 +34,7 @@ def test_config_loader(filename, ans_url, ans_path, ans_files):
 
 @pytest.mark.parametrize("path, options, files, answer", [
     (
-        '/projects/test-data', {},
+        'projects/test-data', {},
         [
             {
                 'dst': 'work', 'src': 'storage', 'arch': 'bz2',
@@ -47,10 +47,10 @@ def test_config_loader(filename, ans_url, ans_path, ans_files):
 
         ], 
         [
-            ('/projects/test-data/storage/data1.txt.bz2', r'work\data1.txt.bz2'),
-            ('/projects/test-data/storage/data2.txt.bz2', r'work\data2.txt.bz2'),
-            ('/projects/test-data/experiment/data1.csv.gz', r'experiment\data1.csv.gz'),
-            ('/projects/test-data/experiment/data2.csv.gz', r'experiment\data2.csv.gz')
+            ('projects/test-data/storage/data1.txt.bz2', r'work\data1.txt.bz2'),
+            ('projects/test-data/storage/data2.txt.bz2', r'work\data2.txt.bz2'),
+            ('projects/test-data/experiment/data1.csv.gz', r'experiment\data1.csv.gz'),
+            ('projects/test-data/experiment/data2.csv.gz', r'experiment\data2.csv.gz')
         ]
     )
 ])
