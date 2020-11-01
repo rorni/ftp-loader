@@ -108,7 +108,7 @@ def decompress(files):
             base = gzip
         else:
             continue
-        with open(path.stem, 'wb') as fdst:
+        with open(path.parent / path.stem, 'wb') as fdst:
             with base.open(path, 'rb') as fsrc:
                 print('   * Extracting: {0} ...'.format(path))
                 fdst.write(fsrc.read())
