@@ -16,12 +16,19 @@ Usage
 -----
 
 ftp-loader -h
+
     Shows help.
+
 ftp-loader [--overwrite] [ftp-config.toml] 
+
     Downloads and extracts data from FTP server. Index file name is optional.
+
     Default index file - ftp-config.toml.
+
 ftp-loader --upload [--overwrite] [ftp-config.toml]
+
     Compresses and uploads data to FTP server. Index file name is optional. 
+    
     Default index file - ftp-config.toml.
 
 --overwrite Option instructs to overwrite existing files.
@@ -39,14 +46,23 @@ Index file must contain the following parameters:
    contain 3 or 4 parameters:
 
    [[files]]
+
    dst = "work"    # Destination folder name.
+
    src = "storage" # Source folder name relative to 'path'.
+
    arch = "bz2"    # Optional. Archive type. Supported archive formats:
+
                    # gz, bz2, zip, xz
+
    names = [       # list of file names.
+
        file1.txt,
+
        file2.csv
+
    ]
 
-Every group of files starts with [[files]] header. The number of groups is 
-arbitrary.
+
+   Every group of files starts with [[files]] header. The number of groups is 
+   arbitrary.
