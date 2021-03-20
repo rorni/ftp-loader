@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import bz2, gzip
 from enum import Enum
 
@@ -91,7 +91,7 @@ class FileTransfer:
     def __init__(self, name, local_path, remote_path, arch=None):
         self._name = name
         self._local_path = Path(local_path)
-        self._remote_path = Path(remote_path)
+        self._remote_path = PurePosixPath(remote_path)
         self._arch = arch
 
     def create_local_folder(self):
@@ -117,7 +117,7 @@ class FileTransfer:
             Connection object.
         """
         try:
-            connection.makedirs(self._remote_path)
+            connection.makedirs(str(self._remote_path))
         except OSError:
             message = "Remote file {0} exists but folder is expected".format(self._remote_path)
             raise LoaderException(ErrorCode.REMOTE_NOT_A_FOLDER, message)
@@ -130,7 +130,7 @@ class FileTransfer:
 
     @staticmethod
     def check_remote_file_exists(connection, remote_file, opt_message=''):
-        if not connection.exists(remote_file):
+        if not connection.exists(str(remote_file)):
             message = "  ! Remote file {0} does not exist. {1}".format(remote_file, opt_message)
             raise LoaderException(ErrorCode.REMOTE_FILE_NOT_EXISTS, message)
 
@@ -144,7 +144,7 @@ class FileTransfer:
 
     @staticmethod
     def check_remote_or_remove(connection, remote_file, skip, opt_message=''):
-        if connection.exists(remote_file):
+        if connection.exists(str(remote_file)):
             if skip:
                 message = "  * Remote file {0} already exists. {1}".format(remote_file, opt_message)
                 raise LoaderException(ErrorCode.REMOTE_ALREADY_EXISTS, message)
@@ -222,7 +222,7 @@ class FileTransfer:
         """
         dst_file = self._local_path / self._arch_name
         dst_file2 = self._local_path / self._name
-        src_file = self._remote_path / self._arch_name
+        src_file = str(self._remote_path / self._arch_name)
         self.check_remote_file_exists(connection, src_file, 'Nothing to download...')
         self.check_local_or_remove(dst_file, skip_existing, "Skipping...")
         self.check_local_or_remove(dst_file2, skip_existing, "Skipping...")
@@ -240,7 +240,7 @@ class FileTransfer:
         skip_existing : bool
             To skip already Uploaded files. Default: True.
         """
-        dst_file = self._remote_path / self._arch_name
+        dst_file = str(self._remote_path / self._arch_name)
         src_file = self._local_path / self._arch_name
         self.check_local_file_exists(src_file, 'Nothing to upload...')
         self.check_remote_or_remove(connection, dst_file, skip_existing, "Skipping...")
