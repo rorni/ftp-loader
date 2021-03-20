@@ -205,6 +205,24 @@ def file_tree4(tmp_path):
     clear_dir(tmp_path)
 
 
+@pytest.mark.parametrize('local, remote, name, arch', [
+    ('loc_project1/loc_test_data1', 'project1/test_data1', 'file1.txt', 'bz2'),
+    ('loc_project1/loc_test_data1', 'project1/test_data1', 'file2.txt', 'bz2'),
+    ('loc_project1/loc_test_data2/loc_container', 'project1/test_data2/container', 'file21.csv', 'gz'),
+    ('loc_project1/loc_test_data2/loc_container', 'project1/test_data2/container', 'file22.csv', 'gz'),
+    ('loc_project1/loc_test_data2', 'project1/test_data2', 'container2.txt', None),
+    ('loc_project2/loc_data3', 'project2/data3', 'file31.txt', None),
+    ('loc_project2/loc_data3', 'project2/data3', 'file32.txt', None),
+    ('loc_project2', 'project2', 'readme.txt', None),
+])
+def test_clear(file_tree2, tmp_path, local, remote, name, arch):
+    ft = loader.FileTransfer(name, tmp_path / local, remote, arch)
+    ft.clear()
+    if arch:
+        assert False == (tmp_path / local / ft._arch_name).exists()
+    assert False == (tmp_path / local / ft._name).exists()    
+
+
 @pytest.mark.parametrize('local, remote, name, arch, skip, content', [
     ('loc_project1/loc_test_data1', 'project1/test_data1', 'file1.txt', 'bz2', True, 'File1 content'),
     ('loc_project1/loc_test_data1', 'project1/test_data1', 'file2.txt', 'bz2', True, 'File2 content'),
