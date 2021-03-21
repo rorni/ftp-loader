@@ -17,18 +17,18 @@ Usage
 
 `ftp-loader -h`
 
-    Shows help.
+   Shows help.
 
 `ftp-loader [--overwrite] [ftp-config.toml] `
 
-    Downloads and extracts data from FTP server. Index file name is optional.
-    Default index file - ftp-config.toml.
+   Downloads and extracts data from FTP server. Index file name is optional.
+   Default index file - ftp-config.toml.
 
 
 `ftp-loader --upload [--overwrite] [ftp-config.toml]`
 
-    Compresses and uploads data to FTP server. Index file name is optional. 
-    Default index file - ftp-config.toml.
+   Compresses and uploads data to FTP server. Index file name is optional. 
+   Default index file - ftp-config.toml.
 
 `--overwrite` Option instructs to overwrite existing files.
 
