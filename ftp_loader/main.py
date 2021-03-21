@@ -96,6 +96,7 @@ def main():
         url, file_trans = read_config(args['config'])
     except FileNotFoundError:
         print('There is no configuration file {0}. Aborting...'.format(args['config']))
+        exit()
 
     skip_existing = not args['overwrite']
     if args['clear']:
