@@ -12,6 +12,11 @@ their locations both at project folder and FTP. This is default name, but other
 *.toml files can be used to split file index into separate parts. Files can
 be compressed.
 
+Installation
+------------
+
+`pip install ftp-loader`
+
 Usage
 -----
 
@@ -42,7 +47,7 @@ Index file must contain the following parameters:
 ```
     url = "server.ftp.ru"
 ```
-2. Path to project's folder at FTP. 
+2. Path to project's folder at FTP. For now only Unix-style is supported.
 ```
     path = "/projects/test-data"
 ```
@@ -54,11 +59,14 @@ Index file must contain the following parameters:
    dst = "work"    # Destination folder name.
    src = "storage" # Source folder name relative to 'path'.
    arch = "bz2"    # Optional. Archive type. Supported archive formats:
-                   # gz, bz2, zip, xz
+                   # gz, bz2
    names = [       # list of file names.
        file1.txt,
        file2.csv
    ]
 ```
-   Every group of files starts with [[files]] header. The number of groups is 
-   arbitrary.
+   Every group of files starts with [[files]] header. The number of groups 
+   is arbitrary.
+
+Example of index file can be found in tests folder - ftp-config.toml.
+

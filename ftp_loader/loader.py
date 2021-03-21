@@ -67,7 +67,7 @@ def create_file_transfers(path, files):
     file_transfers = []
     for case in files:
         dst_path = Path(case['dst'])
-        src_path = Path(path, case['src'])
+        src_path = PurePosixPath(path, case['src'])
         arch = case.get('arch', None)
         for name in case['names']:
             file_transfers.append(FileTransfer(name, dst_path, src_path, arch))

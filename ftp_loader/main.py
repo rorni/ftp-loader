@@ -101,9 +101,10 @@ def main():
     if args['clear']:
         clear_data(file_trans)
     elif args['upload']:
-        print('Start uploading project data to {0}'.format(url))
+        print('Start compressing data ...')
         user, passwd = auth()
         compress_data(file_trans, skip_existing)
+        print('Start uploading project data to {0}'.format(url))
         count = upload_data(url, user, passwd, file_trans, skip_existing)
         print('Finished. {0} files were uploaded.\n'.format(count))
     else:
