@@ -3,12 +3,20 @@
 import argparse
 import getpass
 from pysftp import Connection
+from pathlib import Path
+import json
 
 from . import loader
 
 
-def read_config(config_file):
+def read_config(config_file, hosts=None, base_path=None):
     url, path, files = loader.load_config(config_file)
+
+    if base_path:
+        path = base_path / path
+    elif hosts:
+        path = hosts.get(url, '')
+
     file_trans = loader.create_file_transfers(path, files)
     return url, file_trans
 
@@ -85,6 +93,14 @@ def arg_parser():
     parser.add_argument(
         '--clear', action='store_true', help='Removes local data files'
     )
+    parser.add_argument(
+        '--base-path', type=str, nargs='?', default=None,
+        help="User's base path at FTP"
+    )
+    parser.add_argument(
+        '--check', type=str, nargs='?', default=None,
+        help='Check user initial path when user logs in'
+    )
 
     args = parser.parse_args()
     return dict(vars(args))
@@ -92,8 +108,24 @@ def arg_parser():
 
 def main():
     args = arg_parser()
+
+    if (args['check']):
+        url = args['check']
+        print('Checking access to {0}'.format(url))
+        path = check_ftp_access(url)
+        print('User login path is: {0}'.format(path))
+        return
+
+    extra_kw = {}
+    if (args['base-path']):
+        extra_kw['base_path'] = args['base-path']
+    else:
+        hosts = load_host_config()
+        if hosts:
+            extra_kw['hosts'] = hosts
+
     try:
-        url, file_trans = read_config(args['config'])
+        url, file_trans = read_config(args['config'], **extra_kw)
     except FileNotFoundError:
         print('There is no configuration file {0}. Aborting...'.format(args['config']))
         exit()
@@ -115,3 +147,33 @@ def main():
         print('Finished. {0} files were loaded.\n'.format(len(downloaded)))
         decompress_data(file_trans, skip_existing)
     print('Done. \n')
+
+
+def check_ftp_access(url):
+    """Checks user access to FTP server.
+    
+    Parameters 
+    ----------
+    url : str
+        Server's URL.
+
+    Returns
+    -------
+    path : str
+        User's login path at the server.
+    """
+    user, passwd = auth()
+    with Connection(url, user, password=passwd) as conn:
+        path = conn.pwd
+    return path
+    
+
+def load_host_config():
+    path = Path.home() / Path('.ftp-loader-config.json')
+    if path.exists():
+        with open(path) as f:
+            data = json.load(f)
+    else:
+        data = None
+    return data
+
