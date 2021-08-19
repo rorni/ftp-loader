@@ -19,8 +19,6 @@ def clear_dir(path):
             p.unlink()
             
 
-
-
 @pytest.fixture(scope='function')
 def ftp_server1(sftpserver):
     data = {

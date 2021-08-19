@@ -3,7 +3,7 @@
 import argparse
 import getpass
 from pysftp import Connection
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import json
 
 from . import loader
@@ -13,9 +13,9 @@ def read_config(config_file, hosts=None, base_path=None):
     url, path, files = loader.load_config(config_file)
 
     if base_path:
-        path = base_path / path
+        path = PurePosixPath(base_path) / path
     elif hosts:
-        path = hosts.get(url, '')
+        path = PurePosixPath(hosts.get(url, '')) / path
 
     file_trans = loader.create_file_transfers(path, files)
     return url, file_trans
@@ -117,10 +117,10 @@ def main():
         return
 
     extra_kw = {}
-    if (args['base-path']):
-        extra_kw['base_path'] = args['base-path']
+    if (args['base_path']):
+        extra_kw['base_path'] = args['base_path']
     else:
-        hosts = load_host_config()
+        hosts = load_host_config().get('hosts', None)
         if hosts:
             extra_kw['hosts'] = hosts
 
