@@ -120,9 +120,9 @@ def main():
     if (args['base_path']):
         extra_kw['base_path'] = args['base_path']
     else:
-        hosts = load_host_config().get('hosts', None)
+        hosts = load_host_config()
         if hosts:
-            extra_kw['hosts'] = hosts
+            extra_kw['hosts'] = hosts.get('hosts', None)
 
     try:
         url, file_trans = read_config(args['config'], **extra_kw)
