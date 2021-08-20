@@ -26,13 +26,34 @@ be compressed.
    Downloads and extracts data from FTP server. Index file name is optional.
    Default index file - ftp-config.toml.
 
-
 `ftp-loader --upload [--overwrite] [ftp-config.toml]`
 
    Compresses and uploads data to FTP server. Index file name is optional. 
    Default index file - ftp-config.toml.
 
 `--overwrite` Option instructs to overwrite existing files.
+
+`--check FTP_URL` Checks user's initial path at ftp server.
+
+`--base-path BASE_PATH` Specifies initial path at ftp. 
+
+
+## Configuration
+
+When user logs in its path can be different from the path to FTP root. In this case
+path to FTP's root must be specified. This can be done in two ways.
+
+1. By specifying --base-path parameter in command line.
+
+2. By setting base path in the configuration file. The configuration file must have
+   name `.ftp-loader-config.json` located at the user's home directory. 
+   It must contain "hosts" key with a dictionary of hosts and corresponding paths.
+   For example:
+   {
+       "hosts": {
+           "server.ftp.ru": "/home/path1"
+       }
+   }
 
 ## Index file format
 
