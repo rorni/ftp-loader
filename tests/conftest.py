@@ -1,7 +1,6 @@
 from typing import Callable
 
-from pathlib import Path
-
+# noinspection PyPackageRequirements
 import pytest
 
 from ftp_loader.utils.resource import filename_resolver
