@@ -1,0 +1,3 @@
+# pysftp is abondoned in master branch and PyPI (for 2021 Dec)
+git+https://bitbucket.org/dundeemt/pysftp.git@34f05764a2575b020453fee22c1b27a736135246
+tomlkit>=0.7.2

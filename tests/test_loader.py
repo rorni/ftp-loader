@@ -8,9 +8,10 @@ from pysftp import Connection, CnOpts
 from ftp_loader import loader
 
 
+
 @pytest.mark.parametrize("filename, ans_url, ans_path, ans_files", [
     (
-        'tests/ftp-config.toml', 'server.ftp.ru', 'projects/test-data', 
+        'ftp-config.toml', 'server.ftp.ru', 'projects/test-data',
         [
             {
                 'dst': 'work', 'src': 'storage', 'arch': 'bz2',
@@ -24,8 +25,8 @@ from ftp_loader import loader
         ]
     )
 ])
-def test_config_loader(filename, ans_url, ans_path, ans_files):
-    url, path, files = loader.load_config(filename)
+def test_config_loader(data, filename, ans_url, ans_path, ans_files):
+    url, path, files = loader.load_config(data(filename))
     assert url == ans_url
     assert path == ans_path
     assert len(files) == len(ans_files)
